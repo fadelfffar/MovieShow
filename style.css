@@ -1,0 +1,16 @@
+.header_area.main-menu.navbar{
+    padding: 1rem 20rem;
+}
+
+.header_area.main-menu.nav-item.nav-link{
+    font-family: 'Times New Roman', Times, serif;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 1.7rem;
+    color:black;
+}
+
+.header_area.main-menu.navbar.active a{
+    background: wheat;
+    background-clip: text;
+}

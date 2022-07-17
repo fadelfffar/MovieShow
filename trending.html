@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/89b8dcd205.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/97f4dbfedd.js" crossorigin="anonymous"></script>  
+    <link href="./styles.css" rel="stylesheet">
+    <title>Trending</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">TMDB</a>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link" aria-current="page" href="./home2.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./nowplaying.html">Now Playing</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="./upcoming.html" tabindex="-1" aria-disabled="true">Upcoming</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="./trending.html" tabindex="-1" aria-disabled="true">Trending</a>
+                </li>
+              </ul>
+              <div class="d-flex" style="margin-right: 40px;">
+                <div class="input-group mb-3">
+                <input id="search-input" class="form-control mb-3" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                <button id="search-button" class="btn btn-outline-success" type="button">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+    <div class="container">
+    <div class="row row-cols-4 row-cols-md-5 g-4" id="trending-movie-list">
+    </div>
+</body>
+
+ 
+
+<script>
+    api = "https://api.themoviedb.org/3/"; 
+    api_key = "478ba82cea8c6c64d1e999b0f2bea90e";
+    media_type = 'movie';
+    time_window = 'week';
+    $(document).ready(function () {
+      $.ajax({
+      url:  api + 'trending/' + media_type + '/' + time_window + '?api_key=' + api_key,
+      type: "GET",
+         success: function(res) { 
+          console.log(res);
+          for(var i=0; i < res.results.length; i++){
+          var w = res.results[i];
+          var tr = $('<div class="movie-card card shadow-sm border-info" >'); 
+          var tag = "";
+          tag +=  "<img class='img-thumbnail card-img-top' id='movie-tab'src='https://www.themoviedb.org/t/p/w94_and_h141_bestv2/"+w.poster_path+"'  preserveAspectRatio='xMidYMid slice' focusable='false'></img>";
+          tag += "<div class='card-body'>";
+          tag += "<h2 class='title-info'>"+w.original_title + "</h2>";
+          tag += "<p class='vote-info'>"+w.vote_average + "</p>";
+          tag += "<div class='d-flex justify-content-between align-items-center' ><div class='btn-group'>";
+          tag += "<a href='moviedetail.html' target='_blank'><button id="+w.id+"  class='btn btn-sm btn-outline-secondary'>View Movies</button><a>";
+          tag+= "</div></div></div></div>"
+          $('#trending-movie-list').append(tr.html(tag));
+          }
+        }
+      }).done(function (res) {
+        $('button').click(function(e) {
+          let dataElement = e.target.parentElement;
+          let movie_id =dataElement.querySelector("button[id]").id;
+          localStorage.setItem('detailedmovie_id',movie_id);
+        })
+      })
+    })
+    const searchButton = document.getElementById('search-button');
+    const searchInput = document.getElementById('search-input');
+    $(searchButton).on('click', function (e) {
+    const inputValue = searchInput.value
+    console.log(inputValue)
+    localStorage.setItem('search_query',inputValue);
+    window.location.href = "moviesearch.html";
+  })    
+</script>
+</html>
